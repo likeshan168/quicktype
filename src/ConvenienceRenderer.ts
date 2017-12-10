@@ -317,11 +317,17 @@ export abstract class ConvenienceRenderer extends Renderer {
         f: (name: Name, jsonName: string, t: Type) => void
     ): void => {
         const propertyNames = defined(this._propertyNames.get(c));
-        const sortedPropertyNames = propertyNames.sortBy(n => this.names.get(n)).toOrderedMap();
+        // const sortedPropertyNames = propertyNames.sortBy(n => this.names.get(n)).toOrderedMap();
+        this.forEachWithBlankLines(c.properties, blankLocations, (t, jsonName) => {
+            const name = defined(propertyNames.get(jsonName));
+            f(name, jsonName, t);
+        });
+        /*
         this.forEachWithBlankLines(sortedPropertyNames, blankLocations, (name, jsonName) => {
             const t = defined(c.properties.get(jsonName));
             f(name, jsonName, t);
         });
+        */
     };
 
     protected nameForUnionMember = (u: UnionType, t: Type): Name => {
